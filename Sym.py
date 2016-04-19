@@ -37,7 +37,7 @@ class Sym:
                         self.protein = new_protein
                     elif self.accept_higher_energy(new_protein):
                         self.protein = new_protein
-                    if all_steps % self.save_interval == 0:
-                        with open('output/' + self.protein.sequence + '.pdb', 'a') as f:
-                            f.write(self.protein.to_pdb(all_steps / self.save_interval))
+                if all_steps % self.save_interval == 0:
+                    with open('output/' + self.protein.sequence + '.pdb', 'a') as f:
+                        f.write(self.protein.to_pdb(all_steps / self.save_interval))
             self.temp -= self.temp_delta
