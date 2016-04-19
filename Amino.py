@@ -27,15 +27,15 @@ class Amino:
         return self.name == 'H' == other.name and fabs(self.x - other.x) <= 1 and fabs(self.y - other.y) <= 1
 
     def __repr__(self):
-        return self.name
+        return '[' + str(self.id) + ']' + self.name
 
     def rotate_relative(self, angle, other):
         sinn = sin(angle)
         coss = cos(angle)
         x = self.x - other.x
         y = self.y - other.y
-        self.x = int((x * coss - y * sinn) + other.x)
-        self.y = int((x * sinn + y * coss) + other.y)
+        self.x = int(round(x * coss - y * sinn) + other.x)
+        self.y = int(round(x * sinn + y * coss) + other.y)
 
     def to_pdb(self):
         section = 'ATOM'.ljust(6)  # 1-6

@@ -1,4 +1,5 @@
 # coding=utf-8
+from math import radians
 from random import randint, choice
 
 from Amino import Amino
@@ -31,10 +32,10 @@ class Protein:
                     self.energy -= 1
 
     def move(self):
-        relative_amino_number = randint(1, self.length - 1)
-        angle = choice([1.5707963267948966, 3.141592653589793, 4.71238898038469])
+        relative_amino_number = randint(1, self.length - 2)
+        angle = choice([90, 180, 270])
         for a in self.amino[relative_amino_number + 1:]:
-            a.rotate_relative(angle, self.amino[relative_amino_number])
+            a.rotate_relative(radians(angle), self.amino[relative_amino_number])
         self.calculate_energy()
 
     def __repr__(self):
