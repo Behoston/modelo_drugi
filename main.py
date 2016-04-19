@@ -1,13 +1,12 @@
 # coding=utf-8
-from Amino import Amino
-from Protein import Protein
+from Sym import Sym
 
-
-def run(s):
-    protein = Protein([Amino(ch) for ch in s])
-    print protein
-    print 'Is valid:\t', protein.is_valid()
-    print 'Energy:\t\t', protein.get_energy()
-
-
-run('hphhhppphphphp')
+# simulation_1 = Sym('PHPPHPPHHPPHHPPHPPHP')
+# simulation_1.run()
+# simulation_2 = Sym('HPPPHHPPHPHHHHHH')
+# simulation_2.run()
+# simulation_3 = Sym('HPPPHHPPHPHHPHHH')
+# simulation_3.run()
+#
+sym = Sym('PPHHHHPP')
+sym.run()
