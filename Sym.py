@@ -1,7 +1,5 @@
 # coding=utf-8
 from copy import deepcopy
-
-from Amino import Amino
 from Protein import Protein
 from math import exp
 from random import random
@@ -16,6 +14,7 @@ class Sym:
         self.temp_delta = temp_delta
         self.temp = temp_max
         self.save_interval = save_interval
+        self.best = None
 
     def accept_higher_energy(self, new_protein):
         def pi(j):
@@ -27,7 +26,11 @@ class Sym:
     def run(self):
         self.temp = self.temp_max
         all_steps = 0
+        contacts_stats_file = open('output/' + self.protein.sequence + '_contacts.csv', 'w')
+        inertia_stats_file = open('output/' + self.protein.sequence + '_inertia.scv', 'w')
         while self.temp > self.temp_min:
+            contacts_stats_file.write(str(self.temp))
+            inertia_stats_file.write(str(self.temp))
             for s in xrange(self.steps):
                 all_steps += 1
                 new_protein = deepcopy(self.protein)
@@ -35,9 +38,19 @@ class Sym:
                 if new_protein.is_valid():
                     if new_protein.get_energy() <= self.protein.get_energy():
                         self.protein = new_protein
+                        self.best = new_protein
+                        contacts_stats_file.write(';' + str(self.protein.energy))
+                        inertia_stats_file.write(';' + str(self.protein.calculate_moment_of_inertia()))
                     elif self.accept_higher_energy(new_protein):
                         self.protein = new_protein
+                        contacts_stats_file.write(';' + str(self.protein.energy))
+                        inertia_stats_file.write(';' + str(self.protein.calculate_moment_of_inertia()))
                 if all_steps % self.save_interval == 0:
                     with open('output/' + self.protein.sequence + '.pdb', 'a') as f:
                         f.write(self.protein.to_pdb(all_steps / self.save_interval))
             self.temp -= self.temp_delta
+            contacts_stats_file.write('\n')
+        contacts_stats_file.close()
+        inertia_stats_file.close()
+        with open('output/' + self.protein.sequence + '_best.pdb', 'w') as f:
+            f.write(self.best.to_pdb(0))
