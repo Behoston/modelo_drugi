@@ -26,9 +26,14 @@ class Sym:
     def run(self):
         self.temp = self.temp_max
         all_steps = 0
+        # clear file
+        open('output/' + self.protein.sequence + '_trajectory.pdb', 'w').close()
+        heat_stats_file = open('output/' + self.protein.sequence + '_heat.csv', 'w')
         contacts_stats_file = open('output/' + self.protein.sequence + '_contacts.csv', 'w')
-        inertia_stats_file = open('output/' + self.protein.sequence + '_inertia.scv', 'w')
+        inertia_stats_file = open('output/' + self.protein.sequence + '_inertia.csv', 'w')
         while self.temp > self.temp_min:
+            E2 = 0
+            E = 0
             contacts_stats_file.write(str(self.temp))
             inertia_stats_file.write(str(self.temp))
             for s in xrange(self.steps):
@@ -39,18 +44,22 @@ class Sym:
                     if new_protein.get_energy() <= self.protein.get_energy():
                         self.protein = new_protein
                         self.best = new_protein
-                        contacts_stats_file.write(';' + str(self.protein.energy))
-                        inertia_stats_file.write(';' + str(self.protein.calculate_moment_of_inertia()))
                     elif self.accept_higher_energy(new_protein):
                         self.protein = new_protein
-                        contacts_stats_file.write(';' + str(self.protein.energy))
-                        inertia_stats_file.write(';' + str(self.protein.calculate_moment_of_inertia()))
+                # stats
+                contacts_stats_file.write(';' + str(-self.protein.energy))
+                inertia_stats_file.write(';' + str(self.protein.calculate_moment_of_inertia()))
+                E2 += self.protein.energy ** 2
+                E += self.protein.energy
                 if all_steps % self.save_interval == 0:
-                    with open('output/' + self.protein.sequence + '.pdb', 'a') as f:
+                    with open('output/' + self.protein.sequence + '_trajectory.pdb', 'a') as f:
                         f.write(self.protein.to_pdb(all_steps / self.save_interval))
-            self.temp -= self.temp_delta
+            heat_stats_file.write(str(self.temp) + ';' + str((E2 - E ** 2) / self.temp ** 2) + '\n')
             contacts_stats_file.write('\n')
+            inertia_stats_file.write('\n')
+            self.temp -= self.temp_delta
         contacts_stats_file.close()
         inertia_stats_file.close()
+        heat_stats_file.close()
         with open('output/' + self.protein.sequence + '_best.pdb', 'w') as f:
             f.write(self.best.to_pdb(0))
