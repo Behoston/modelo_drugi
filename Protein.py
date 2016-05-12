@@ -72,5 +72,5 @@ class Protein:
     def calculate_moment_of_inertia(self):
         result = 0
         for a in self.amino:
-            result += (self.get_mass_center()[0] - a.x) ** 2 + (self.get_mass_center()[1] - a.y) ** 2
+            result += ((self.get_mass_center()[0] - a.x) ** 2 + (self.get_mass_center()[1] - a.y) ** 2) ** 0.5
         return result
