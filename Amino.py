@@ -1,5 +1,5 @@
 # coding=utf-8
-from math import fabs, cos, sin
+from math import cos, sin
 
 
 class Amino:
@@ -10,12 +10,12 @@ class Amino:
         Amino.id += 1
         self.id = Amino.id
         self.name = name.upper()
-        if x:
+        if x is not None:
             self.x = x
         else:
             Amino.x += 1
             self.x = Amino.x
-        if y:
+        if y is not None:
             self.y = y
         else:
             self.y = 0
@@ -24,10 +24,22 @@ class Amino:
         return self.x == other.x and self.y == other.y
 
     def interact_with(self, other):
-        return self.name == 'H' == other.name and fabs(self.x - other.x) <= 1 and fabs(self.y - other.y) <= 1
+        name = self.name == 'H' == other.name
+        if name:
+            y = self.y - other.y
+            horizontal = (self.x == other.x) and ((y == 1) or (y == -1))
+            x = self.x - other.x
+            vertical = (self.y == other.y) and ((x == 1) or (x == -1))
+            return horizontal or vertical
+        return False
 
     def __repr__(self):
         return '[' + str(self.id) + ']' + self.name
+
+    def __eq__(self, other):
+        if not isinstance(other, Amino):
+            return False
+        return (self.x == other.x) and (self.y == other.y)
 
     def rotate_relative(self, angle, other):
         sinn = sin(angle)

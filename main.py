@@ -1,9 +1,17 @@
 # coding=utf-8
 from Sym import Sym
+from drawing import draw_inertia, draw_heat, draw_contact_histograms
+import matplotlib.pyplot as plt
 
-simulation_1 = Sym('PHPPHPPHHPPHHPPHPPHP')
-simulation_1.run()
-simulation_2 = Sym('HPPPHHPPHPHHHHHH')
-simulation_2.run()
-simulation_3 = Sym('HPPPHHPPHPHHPHHH')
-simulation_3.run()
+seqs = ['PHPPHPPHHPPHHPPHPPHP', 'HPPPHHPPHPHHHHHH', 'HPPPHHPPHPHHPHHH']
+# seqs = ['HHHPPP']
+
+for seq in seqs:
+    simulation = Sym(seq)
+    simulation.run()
+    print seq
+
+    # drawing
+    draw_inertia(seq)
+    draw_heat(seq)
+    draw_contact_histograms(seq)
