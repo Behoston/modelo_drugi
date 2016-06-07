@@ -50,12 +50,14 @@ class Protein(object):
         self.last_energy = self.energy
         self.last_mass_center = self.mass_center
         for a in self.amino[self.last_resid_to_move + 1:]:
-            a.rotate_relative(radians(self.last_rotation_degree), self.amino[self.last_resid_to_move])
+            a.rotate_relative(radians(self.last_rotation_degree),
+                              self.amino[self.last_resid_to_move])
         self.recalculate()
 
     def undo_move(self):
         for a in self.amino[self.last_resid_to_move + 1:]:
-            a.rotate_relative(radians(-self.last_rotation_degree), self.amino[self.last_resid_to_move])
+            a.rotate_relative(radians(-self.last_rotation_degree),
+                              self.amino[self.last_resid_to_move])
         self.energy = self.last_energy
         self.last_energy = None
         self.mass_center = self.last_mass_center
@@ -97,5 +99,6 @@ class Protein(object):
     def calculate_moment_of_inertia(self):
         result = 0
         for a in self.amino:
-            result += (self.mass_center[0] - a.x) ** 2 + (self.mass_center[1] - a.y) ** 2  # ** 0.5 ** 2
+            result += (self.mass_center[0] - a.x) ** 2 + \
+                      (self.mass_center[1] - a.y) ** 2  # ** 0.5 ** 2
         return result

@@ -40,10 +40,15 @@ def draw_heat(seq):
 
 
 def draw_contact_histograms(seq):
-    pass
-
-#     temp = 1.0
-#     while temp > 0:
-#         contact_file = 'output/'+seq+
-#
-#         temp -= 0.05
+    with open('output/' + seq + '/contacts.csv') as contacts_file:
+        for line in contacts_file:
+            line = line.strip().split(';')
+            temp = line[0]
+            values = [int(i) for i in line[1:]]
+            plt.title('Contacts for ' + seq + ' for ' + temp)
+            plt.xlabel('contacts')
+            plt.ylabel('quantity')
+            plt.hist(values, range=(0, len(seq) / 2), normed=False,
+                     color='green')
+            plt.savefig('output/' + seq + '/contacts_' + temp + '.png')
+            plt.close()

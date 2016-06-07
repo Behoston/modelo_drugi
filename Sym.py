@@ -7,7 +7,8 @@ from random import random
 
 
 class Sym:
-    def __init__(self, sequence, steps=10000, temp_min=0.15, temp_max=1.0, temp_delta=0.05, save_interval=100):
+    def __init__(self, sequence, steps=10000, temp_min=0.15, temp_max=1.0,
+                 temp_delta=0.05, save_interval=100):
         self.protein = Protein(sequence)
         self.steps = steps
         self.temp_min = temp_min
@@ -28,14 +29,18 @@ class Sym:
         try:
             os.makedirs('output/' + self.protein.sequence)
         except:
+            # directory exists?
             pass
         self.temp = self.temp_max
         global_steps_done = 0
         # clear file
         open('output/' + self.protein.sequence + '/trajectory.pdb', 'w').close()
-        heat_stats_file = open('output/' + self.protein.sequence + '/heat.csv', 'w')
-        contacts_stats_file = open('output/' + self.protein.sequence + '/contacts.csv', 'w')
-        inertia_stats_file = open('output/' + self.protein.sequence + '/inertia.csv', 'w')
+        heat_stats_file = open('output/' + self.protein.sequence + '/heat.csv',
+                               'w')
+        contacts_stats_file = open(
+            'output/' + self.protein.sequence + '/contacts.csv', 'w')
+        inertia_stats_file = open(
+            'output/' + self.protein.sequence + '/inertia.csv', 'w')
         while self.temp >= self.temp_min:
             E2 = 0.0
             E = 0.0
@@ -76,7 +81,8 @@ class Sym:
             inertia_stats_file.write(';' + str(inertia_sum / self.steps) + '\n')
             E /= self.steps
             E2 /= self.steps
-            heat_stats_file.write(str(self.temp) + ';' + str((E2 - E ** 2) / self.temp ** 2) + '\n')
+            heat_stats_file.write(str(self.temp) + ';' + str(
+                (E2 - E ** 2) / self.temp ** 2) + '\n')
             contacts_stats_file.write('\n')
             self.temp -= self.temp_delta
         contacts_stats_file.close()
@@ -85,7 +91,8 @@ class Sym:
         self.save_best()
 
     def save_best_for_actual_temp(self, best_for_temperature):
-        with open('output/' + self.protein.sequence + '/best_for_' + str(self.temp) + '.pdb', 'w') as f:
+        with open('output/' + self.protein.sequence + '/best_for_' + str(
+                self.temp) + '.pdb', 'w') as f:
             f.write(best_for_temperature.to_pdb(self.temp))
 
     def save_best(self):
@@ -94,5 +101,6 @@ class Sym:
 
     def save_trajectory(self, all_steps):
         if all_steps % self.save_interval == 0:
-            with open('output/' + self.protein.sequence + '/trajectory.pdb', 'a') as f:
+            with open('output/' + self.protein.sequence + '/trajectory.pdb',
+                      'a') as f:
                 f.write(self.protein.to_pdb(all_steps / self.save_interval))
