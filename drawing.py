@@ -33,7 +33,6 @@ def draw_heat(seq):
     plt.xlabel('temperature')
     plt.title('Heat ' + seq)
     plt.grid(True)
-    plt.colors()
     plt.plot(heat_temp, heat_value, color='red')
     plt.savefig('output/' + seq + '/heat.png')
     plt.close()
@@ -44,6 +43,8 @@ def draw_contact_histograms(seq):
         for line in contacts_file:
             line = line.strip().split(';')
             temp = line[0]
+            if len(temp) == 3:
+                temp += '0'
             values = [int(i) for i in line[1:]]
             plt.title('Contacts for ' + seq + ' for ' + temp)
             plt.xlabel('contacts')
@@ -52,3 +53,9 @@ def draw_contact_histograms(seq):
                      color='green')
             plt.savefig('output/' + seq + '/contacts_' + temp + '.png')
             plt.close()
+
+
+def draw_all(seq):
+    draw_heat(seq)
+    draw_inertia(seq)
+    draw_contact_histograms(seq)

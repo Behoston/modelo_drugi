@@ -23,7 +23,8 @@ class Sym:
             kb = 1.0
             return exp(-j / (kb * self.temp))
 
-        return random() < (pi(self.protein.energy) / pi(self.protein.last_energy))
+        return random() < (
+            pi(self.protein.energy) / pi(self.protein.last_energy))
 
     def run(self):
         try:
@@ -46,8 +47,9 @@ class Sym:
             E = 0.0
             inertia_sum = 0.0
             best_for_temperature = None
-            contacts_stats_file.write(str(self.temp))
-            inertia_stats_file.write(str(self.temp))
+            str_temp = str(self.temp)
+            contacts_stats_file.write(str_temp)
+            inertia_stats_file.write(str_temp)
             for s in xrange(self.steps):
                 global_steps_done += 1
                 # new_protein = deepcopy(self.protein)
@@ -81,8 +83,8 @@ class Sym:
             inertia_stats_file.write(';' + str(inertia_sum / self.steps) + '\n')
             E /= self.steps
             E2 /= self.steps
-            heat_stats_file.write(str(self.temp) + ';' + str(
-                (E2 - E ** 2) / self.temp ** 2) + '\n')
+            heat_stats_file.write(
+                str_temp + ';' + str((E2 - E ** 2) / self.temp ** 2) + '\n')
             contacts_stats_file.write('\n')
             self.temp -= self.temp_delta
         contacts_stats_file.close()
@@ -91,8 +93,11 @@ class Sym:
         self.save_best()
 
     def save_best_for_actual_temp(self, best_for_temperature):
-        with open('output/' + self.protein.sequence + '/best_for_' + str(
-                self.temp) + '.pdb', 'w') as f:
+        temp = str(self.temp)
+        if len(temp) == 3:
+            temp += '0'
+        with open('output/' + self.protein.sequence +
+                          '/best_for_' + temp + '.pdb', 'w') as f:
             f.write(best_for_temperature.to_pdb(self.temp))
 
     def save_best(self):
