@@ -1,2 +1,2 @@
 # modelo_drugi
-Please create directory named 'output' in working directory
+Progarm do modelowania białek na siatce dwuwymiarowej w modelu HP stosując symulowane wyżażanie
