@@ -1,2 +1,2 @@
 # modelo_drugi
-Progarm do modelowania białek na siatce dwuwymiarowej w modelu HP stosując symulowane wyżażanie
+Two dimmensional grid HP model using simulated annealing with Monte Carlo
