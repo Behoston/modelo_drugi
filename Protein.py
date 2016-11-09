@@ -27,16 +27,6 @@ class Protein(object):
                     return False
         return True
 
-    # def get_energy(self):
-    #     if not self.energy:
-    #         self.calculate_energy()
-    #     return self.energy
-    #
-    # def get_mass_center(self):
-    #     if not self.mass_center:
-    #         self.calculate_mass_center()
-    #     return self.mass_center
-
     def calculate_energy(self):
         self.energy = 0
         for i in xrange(self.length):
